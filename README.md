@@ -1,9 +1,9 @@
 # djs-forms
 
-djs forms is a little extension to discord.js
-This modules helps you to manage RichEmbed, with some templatings methods, and catch all MessageReactions easly.
+`djs forms` is a little extension to `discord.js`
+This modules helps you to manage `RichEmbed`, with some templatings methods, and catch all `MessageReactions` easly.
 
-If you are building a discord bot and you want to easly interact with the users, this module will provides you a "component-like" management of your RichEmbed forms 
+If you are building a `discord bot` and you want to easly interact with the users, this module will provides you a `component-like` management of your RichEmbed forms 
 
 ## Getting Started
 
