@@ -18,129 +18,46 @@ npm i djs-forms
 import form from 'djs-form'
 ```
 
-
-
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You will need an existing discord bot project, with at least an event that can handle the post creation
 
+```js
+bot.on('message', msg => {
+    if (msg.content === "hello") {
+            //create a form instance
+            let f = form(bot, msg.channel);
+
+            //then create how many post you want
+            let helloPost = f.createPost({
+                post: {
+                    content: 'New message',
+                    embed: new djs.RichEmbed()
+                        .setAuthor('Romuald')
+                        .setTitle('Hello World')
+                }
+            });
+            //then just display it, this will build the post and render it
+            f.display(helloPost);
+        }
+    })
 ```
-Give examples
-```
+### Examples 
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+See [Example](examples/examples1.js)
+See [Example1](examples/examples2.js)
+See [Example2](examples/examples3.js)
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **MaxBly** - *Initial work* - [MaxBly](https://github.com/MaxBly)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
 
-# djs-forms
-
-Initialise a form, Create a Post and send it
 ```js
-import form from 'djs-froms';
-import djs from 'discord.js';
-
-let bot = new djs.Client()
-bot.on('message', msg => {
-
-if (msg.content === "test") {
-        let f = form(bot, msg.channel)
-        let post = f.createPost({
-            post: {
-                content: 'New message',
-                embed: new djs.RichEmbed()
-                    .setAuthor('Max')
-                    .setTitle('Hello World')
-            }
-        })
-        f.display(post)
-    }
-})
-
-bot.login('<token>')
-```
-
-
-Create a post that handle message reactions
-```js
-let post = f.createPost({
-    post: {
-        content: 'New message',
-        embed: new djs.RichEmbed()
-            .setAuthor('Max')
-            .setTitle('Hello World')
-    },
-    reacts: ['🥃','🍇','💼'],
-    reactsHandler(react) {
-        console.log(react.emoji.name)
-    }
-})
-f.display(post)
+    let reacts = ['🥃','🍇','💼']
 ```
