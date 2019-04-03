@@ -44,9 +44,9 @@ bot.on('message', msg => {
 ```
 ### Examples 
 
-See [Example](examples/examples1.js)
-See [Example1](examples/examples2.js)
-See [Example2](examples/examples3.js)
+See [Example](examples/example1.js)
+See [Example1](examples/example2.js)
+See [Example2](examples/example3.js)
 
 ## Authors
 
