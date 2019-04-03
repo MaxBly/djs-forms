@@ -1,0 +1,20 @@
+{
+  "name": "djs-forms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "typings": "dist/index",
+  "author": "MaxBly",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaxBly/djs-forms"
+  },
+  "dependencies": {
+    "@types/node": "^11.11.7",
+    "discord.js": "11.4.2"
+  }
+}
