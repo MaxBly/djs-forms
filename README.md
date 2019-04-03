@@ -45,7 +45,9 @@ bot.on('message', msg => {
 ### Examples 
 
 See [Example](examples/example1.js)
+
 See [Example1](examples/example2.js)
+
 See [Example2](examples/example3.js)
 
 ## Authors
@@ -54,9 +56,7 @@ See [Example2](examples/example3.js)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-
+This project is licensed under the MIT License
 
 ```js
     let reacts = ['🥃','🍇','💼']
