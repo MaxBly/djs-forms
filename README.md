@@ -49,7 +49,7 @@ bot.on('message', msg => {
 
 `rules` need to be defined following one of thoses formats
 
-#### `post || postBuilder` 
+##### `post || postBuilder` 
 
 ```js
 f.creatPost({
@@ -94,7 +94,7 @@ This function can also be an `async` resolving a `Promise` of `{embed, content}`
 ```js
 f.creatPost({
     postBuilder(ops) { 
-        return new Promise(resolve => {
+        return new Promise(async resolve => {
             let author = await fetchFromApi('someapi.com/user?id=' + ops.id)
             let embed = new djs.RichEmbed()
                 .setAuthor(author)
@@ -107,11 +107,11 @@ f.creatPost({
 ```
 same as the previous one
 
-#### (`post || postBuilder`) && (`reacts || reactsBuilder) && reactsHandler` 
+##### (`post || postBuilder`) && (`reacts || reactsBuilder) && reactsHandler` 
 
 
 
-#### `globalBuilder && reactsHandler` 
+##### `globalBuilder && reactsHandler` 
 
 ```ts
 f.creatPost({
