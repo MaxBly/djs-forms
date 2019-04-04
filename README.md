@@ -170,6 +170,50 @@ f.createPost({
 ```
 Off course it can be asyncronous, same as before
 
+### f.display(post: Post, ops?: any)
+
+the `post` parameter is a _Post_ provided by the `f.createPost()` method
+the `ops` parameter is an _Object_ witch contains all the data you want to pass to the `postBuilder | reactsBuilder | globalBuilder`
+
+```js
+let post = f.creatPost({
+    post: {
+        embed: new djs.RichEmbed()
+            .setAuthor('Romuald')
+            .setTitle('Hello world'), 
+        content: 'New message'
+    },
+    reactsBuilder (ops) {
+        let emojis = [ops.Quit, ops.Prev, ops.Next, ops.Ok]
+    }, 
+    reactsHandler(react) {
+        console.log('reaction!', react.emoji.name)
+    }
+})
+
+f.display(post, {Quit: '❎ ', Prev: '⏪', Next: '⏩', Ok: '✅'});
+```
+
+### f.onReplies(handler: (msg) => void, filter?: (msg) => boolean)
+
+the `post` parameter is a _Post_ provided by the `f.createPost()` method
+the `ops` parameter is an _Object_ witch contains all the data you want to pass to the `postBuilder | reactsBuilder | globalBuilder`
+
+```js
+f.onReplies(msg => {
+    console.log('reply!', msg.content)
+})
+```
+get all _Messages_ sent on the _Channel_ provided at `let f = form(bot, msg.channel)`
+
+```js
+f.onReplies(msg => {
+    console.log('reply!', msg.content)
+}, msg => msg.mentions.members.get(bot.user.id) ? true : false)
+```
+
+get only the _Messages_ witch @mention the bot, sent on the _Channel_ provided at `let f = form(bot, msg.channel)`
+
 ### Examples 
 
 See [Example](examples/example1.js)
