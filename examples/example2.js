@@ -44,4 +44,4 @@ bot.on('message', (msg) => {
 
 
 
-bot.login('MzIwOTQwMjMxMDAyMDMwMDgy.D0s6Dg.YP3X0HwHXanbM7mNQwZFGg_qumI')
+bot.login('token')
