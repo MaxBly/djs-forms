@@ -65,7 +65,7 @@ or
 
 ```js
 f.creatPost({
-    postBuilder(ops) { 
+    postBuilder(ops) { //example on given ops: {author: 'Romuald'}
         let embed = new djs.RichEmbed()
             .setAuthor(ops.author)
             .setTitle('Hello world'), 
@@ -78,7 +78,7 @@ same as the upper one but you have access to the `ops` parameter which is provid
 
 ```js
 f.creatPost({
-    async postBuilder(ops) { 
+    async postBuilder(ops) { //example on given ops: {id: '2134'}
         let author = await fetchFromApi('someapi.com/user?id=' + ops.id)
         let embed = new djs.RichEmbed()
             .setAuthor(author)
@@ -88,12 +88,12 @@ f.creatPost({
     },
 })
 ```
-This function can also be an `async` resolving a `Promise` of `{embed, content}`
+This function can also be an `async` retruning a _Promise_ that resolve `{embed, content}`
 
 
 ```js
 f.creatPost({
-    postBuilder(ops) { 
+    postBuilder(ops) { //example on given ops: {id: '651'}
         return new Promise(async resolve => {
             let author = await fetchFromApi('someapi.com/user?id=' + ops.id)
             let embed = new djs.RichEmbed()
@@ -109,63 +109,66 @@ same as the previous one
 
 #### `(post || postBuilder) && (reacts || reactsBuilder) && reactsHandler` 
 
+`reacts` and `reactsBuilder` work the same way as `post` and `postBuilder` you only need one of both
+**Unless** if you declare a `reacts` or `reactsBuilder` statement you will need to define an `reactsHandler`
 
-
-#### `globalBuilder && reactsHandler` 
-
-```ts
+```js
 f.creatPost({
-    post: : {
-        embed: new djs.RichEmbed()
-            .setAuthor('Romuald')
-            .setTitle('Hello world'), 
-        content: 'New message'
-    },
-})
-```
-
-the `PostCreatorOptions` is an objetc like :
-```ts
-
-
-let rules = {
     post: {
         embed: new djs.RichEmbed()
             .setAuthor('Romuald')
             .setTitle('Hello world'), 
         content: 'New message'
     },
-    postBuilder (ops? : any) { //ops is provided when doing f.display(post, ops)
-        let embed = new djs.RichEmbed()
+    reacts: ['🥃','🍇','💼'], 
+    reactsHandler(react) {
+        console.log('reaction!', react.emoji.name)
+    }
+```
+`reacts` contains an `Array` of `unicode emojis`
+
+```js
+f.creatPost({
+    post: {
+        embed: new djs.RichEmbed()
             .setAuthor('Romuald')
-            .setTitle('Hello world');
-        let content = 'New Message';
-        return {embed, content}
+            .setTitle('Hello world'), 
+        content: 'New message'
     },
-    globalBuilder (ops? : any) { //ops is provided when doing f.display(post, ops)
+    reactsBuilder (ops) { //example on given ops: {Quit: '❎ ', Prev: '⏪', Next: '⏩', Ok: '✅'}
+        let emojis = [ops.Quit, ops.Prev, ops.Next, ops.Ok]
+    }, 
+    reactsHandler(react) {
+        console.log('reaction!', react.emoji.name)
+    }
+})
+```
+same as the upper one but you have access to the `ops` parameter which is provided when `f.display(post, ops)`
+This function can also be an `async` retruning a _Promise_ that resolve an _Array_ of *unicode emoji*
+
+#### `globalBuilder && reactsHandler` 
+
+the `globalBuilder` permits to build the `post` and the `reacts` in the same _methods_,
+It returns and _Object_ containing an `{embed, content}` _Object_ as `post` and an _Array_ of *unicode emoji* as `reacts`
+you alse need an `reactsHandler` because you are also building emojis;
+
+```js
+f.createPost({
+    globalBuilder (ops) { //example of given ops: {author: 'Romuald'}
         let embed = new djs.RichEmbed()
-            .setAuthor('Romuald')
+            .setAuthor(author)
             .setTitle('Hello world');
         let content = 'New Message';
         return {
             post: {embed, content}, reacts: ['🥃','🍇','💼']
         }
     },
-    reacts: ['🥃','🍇','💼'],
-    reactsBuilder (ops: any) {
-        let reacts = ['🥃','🍇','💼'];
-        return reacts;
-    },
-
-    reactsHandler (react: djs.MessageReaction) {
-        console.log('react', reacts.emoji.name)
-    },
-}
-
+    reactsHandler (react) {
+        console.log('reaction!', react.emoji.name)
+    }
+})
 ```
-
-
-
+Off course it can be asyncronous, same as before
 
 ### Examples 
 
