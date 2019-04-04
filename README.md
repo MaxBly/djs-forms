@@ -41,7 +41,132 @@ bot.on('message', msg => {
             f.display(helloPost);
         }
     })
+
 ```
+## Docs
+
+### f.createPost(rules: PostCreatorOptions)
+
+`rules` need to be defined following one of thoses formats
+
+#### `post || postBuilder` 
+
+```js
+f.creatPost({
+    post: {
+        embed: new djs.RichEmbed()
+            .setAuthor('Romuald')
+            .setTitle('Hello world'), 
+        content: 'New message'
+    },
+})
+```
+or
+
+```js
+f.creatPost({
+    postBuilder(ops) { 
+        let embed = new djs.RichEmbed()
+            .setAuthor(ops.author)
+            .setTitle('Hello world'), 
+        let content = 'New message'
+        return { embed, content }
+    },
+})
+```
+same as the upper one but you have access to the `ops` parameter which is provided when `f.display(post, ops)`
+
+```js
+f.creatPost({
+    async postBuilder(ops) { 
+        let author = await fetchFromApi('someapi.com/user?id=' + ops.id)
+        let embed = new djs.RichEmbed()
+            .setAuthor(author)
+            .setTitle('Hello world'), 
+        let content = 'New message'
+        return { embed, content }
+    },
+})
+```
+This function can also be an `async` resolving a `Promise` of `{embed, content}`
+
+
+```js
+f.creatPost({
+    postBuilder(ops) { 
+        return new Promise(resolve => {
+            let author = await fetchFromApi('someapi.com/user?id=' + ops.id)
+            let embed = new djs.RichEmbed()
+                .setAuthor(author)
+                .setTitle('Hello world'), 
+            let content = 'New message'
+            resolve({ embed, content })
+        })
+    },
+})
+```
+same as the previous one
+
+#### (`post || postBuilder`) && (`reacts || reactsBuilder) && reactsHandler` 
+
+
+
+#### `globalBuilder && reactsHandler` 
+
+```ts
+f.creatPost({
+    post: : {
+        embed: new djs.RichEmbed()
+            .setAuthor('Romuald')
+            .setTitle('Hello world'), 
+        content: 'New message'
+    },
+})
+```
+
+the `PostCreatorOptions` is an objetc like :
+```ts
+
+
+let rules = {
+    post: {
+        embed: new djs.RichEmbed()
+            .setAuthor('Romuald')
+            .setTitle('Hello world'), 
+        content: 'New message'
+    },
+    postBuilder (ops? : any) { //ops is provided when doing f.display(post, ops)
+        let embed = new djs.RichEmbed()
+            .setAuthor('Romuald')
+            .setTitle('Hello world');
+        let content = 'New Message';
+        return {embed, content}
+    },
+    globalBuilder (ops? : any) { //ops is provided when doing f.display(post, ops)
+        let embed = new djs.RichEmbed()
+            .setAuthor('Romuald')
+            .setTitle('Hello world');
+        let content = 'New Message';
+        return {
+            post: {embed, content}, reacts: ['🥃','🍇','💼']
+        }
+    },
+    reacts: ['🥃','🍇','💼'],
+    reactsBuilder (ops: any) {
+        let reacts = ['🥃','🍇','💼'];
+        return reacts;
+    },
+
+    reactsHandler (react: djs.MessageReaction) {
+        console.log('react', reacts.emoji.name)
+    },
+}
+
+```
+
+
+
+
 ### Examples 
 
 See [Example](examples/example1.js)
@@ -57,7 +182,3 @@ See [Example2](examples/example3.js)
 ## License
 
 This project is licensed under the MIT License
-
-```js
-    let reacts = ['🥃','🍇','💼']
-```
