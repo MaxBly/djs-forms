@@ -1,9 +1,12 @@
 import djs from 'discord.js';
-export type ReactsHandler = (react: djs.MessageReaction) => void;
+import { Form } from './Form';
+export type ReactsHandler = (react: djs.MessageReaction, state: State) => void;
 export type ReactsBuilder = (ops: any) => any[] | Promise<any[]>;
 export type PostBuilder = (ops: any) => MessageOptions | Promise<MessageOptions>;
 export type GlobalBuilder = (ops: any) => GlobalData | Promise<GlobalData>;
 
+
+let k = new djs.Client()
 export interface PostCreatorOptions {
     postBuilder?: PostBuilder,
     globalBuilder?: GlobalBuilder,
@@ -18,6 +21,10 @@ export interface MessageOptions {
     content?: string
 }
 
+export interface State {
+    state: any,
+    setState: (value) => void;
+}
 
 export interface GlobalData {
     reacts: any[],
@@ -38,10 +45,12 @@ export default class Post {
      * @private
      */
 
-    constructor(private rules: PostCreatorOptions, private clientid: string) { }
+    constructor(private rules: PostCreatorOptions, private clientid: string, public parentForm: Form) { }
 
 
     async build(ops: any = {}) {
+        ops.state = this.parentForm.state;
+        ops.setState = this.parentForm.setState.bind(this.parentForm);
         if (this.rules.globalBuilder) {
             if (this.rules.reactsHandler) {
                 let global = await this.rules.globalBuilder(ops);
@@ -97,7 +106,7 @@ export default class Post {
             }
             this.collector = msg.createReactionCollector(
                 (react: djs.MessageReaction, user: djs.GuildMember) => user.id !== this.clientid && this.reacts.includes(react.emoji.name));
-            this.collector.on('collect', (r: djs.MessageReaction) => this.rules.reactsHandler && this.rules.reactsHandler(r));
+            this.collector.on('collect', (r: djs.MessageReaction) => this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setState: this.parentForm.setState }));
         }
         await msg.edit(this.post.content, this.post.embed)
         return;

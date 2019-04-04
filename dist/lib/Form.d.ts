@@ -9,6 +9,7 @@ export declare class Form {
     masterPost: string;
     repliesHandler: RepliesHandler;
     repliesFilter: RepliesFilter;
+    state: any;
     /**
      * Create a new form
      *
@@ -91,6 +92,7 @@ export declare class Form {
      * @returns {Promise<void>}
      * @public
      */
+    setState(value: any): Promise<void>;
     display(post: Post, ops?: any): Promise<void>;
     /**
      * Fetch the current message.

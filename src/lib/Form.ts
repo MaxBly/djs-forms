@@ -12,6 +12,7 @@ export class Form {
     public masterPost: string;
     public repliesHandler: RepliesHandler;
     public repliesFilter: RepliesFilter;
+    public state: any = {};
 
     /**
      * Create a new form
@@ -101,7 +102,7 @@ export class Form {
      * @public
      */
     createPost(rules: PostCreatorOptions) {
-        return new Post(rules, this.client.user.id);
+        return new Post(rules, this.client.user.id, this);
     }
 
 
@@ -114,6 +115,9 @@ export class Form {
      * @public
      */
 
+    async setState(value: any) {
+        this.state = value;
+    }
 
     async display(post: Post, ops: any = {}) {
         return post.display(await this.fetchForm(), ops);

@@ -18,6 +18,7 @@ class Form {
     constructor(client, channel) {
         this.client = client;
         this.channel = channel;
+        this.state = {};
         client.on('message', (msg) => {
             if (msg.channel.id === channel.id) {
                 if (this.repliesFilter) {
@@ -98,7 +99,7 @@ class Form {
      * @public
      */
     createPost(rules) {
-        return new Post_1.default(rules, this.client.user.id);
+        return new Post_1.default(rules, this.client.user.id, this);
     }
     /**
      * Display the post.
@@ -108,6 +109,9 @@ class Form {
      * @returns {Promise<void>}
      * @public
      */
+    async setState(value) {
+        this.state = value;
+    }
     async display(post, ops = {}) {
         return post.display(await this.fetchForm(), ops);
     }

@@ -1,5 +1,6 @@
 import djs from 'discord.js';
-export declare type ReactsHandler = (react: djs.MessageReaction) => void;
+import { Form } from './Form';
+export declare type ReactsHandler = (react: djs.MessageReaction, state: State) => void;
 export declare type ReactsBuilder = (ops: any) => any[] | Promise<any[]>;
 export declare type PostBuilder = (ops: any) => MessageOptions | Promise<MessageOptions>;
 export declare type GlobalBuilder = (ops: any) => GlobalData | Promise<GlobalData>;
@@ -15,6 +16,10 @@ export interface MessageOptions {
     embed?: djs.RichEmbed;
     content?: string;
 }
+export interface State {
+    state: any;
+    setState: (value: any) => void;
+}
 export interface GlobalData {
     reacts: any[];
     post: MessageOptions;
@@ -22,6 +27,7 @@ export interface GlobalData {
 export default class Post {
     private rules;
     private clientid;
+    parentForm: Form;
     private post;
     private reacts;
     private collector;
@@ -33,7 +39,7 @@ export default class Post {
      * @returns {Promise<void>}
      * @private
      */
-    constructor(rules: PostCreatorOptions, clientid: string);
+    constructor(rules: PostCreatorOptions, clientid: string, parentForm: Form);
     build(ops?: any): Promise<void>;
     /**
     * Display the Post new Post.
