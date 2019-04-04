@@ -1,9 +1,9 @@
 # djs-forms
 
 `djs forms` is a little extension to `discord.js`
-This modules helps you to manage `RichEmbed`, with some templatings methods, and catch all `MessageReactions` easly.
+This module helps you to manage `RichEmbed`, with some templating methods, and catch all `MessageReactions` easyly.
 
-If you are building a `discord bot` and you want to easly interact with the users, this module will provides you a `component-like` management of your RichEmbed forms 
+If you are building a `discord bot` and you want to easyly interact with the users, this module will provide you a `component-like` management of your RichEmbed forms 
 
 ## Getting Started
 
@@ -47,7 +47,7 @@ bot.on('message', msg => {
 
 ### f.createPost(rules: PostCreatorOptions)
 
-`rules` need to be defined following one of thoses formats
+`rules` need to be defined following one of those formats
 
 #### `post || postBuilder` 
 
@@ -74,7 +74,7 @@ f.creatPost({
     },
 })
 ```
-same as the upper one but you have access to the `ops` parameter which is provided when `f.display(post, ops)`
+same as the upper one but you have access to the `ops` parameter which has provided when doing `f.display(post, ops)`
 
 ```js
 f.creatPost({
@@ -88,7 +88,7 @@ f.creatPost({
     },
 })
 ```
-This function can also be an `async` retruning a _Promise_ that resolve `{embed, content}`
+This function can also be `async` returning a _Promise_ that resolves `{embed, content}`
 
 
 ```js
@@ -105,12 +105,12 @@ f.creatPost({
     },
 })
 ```
-same as the previous one
+Same as the previous one.
 
 #### `(post || postBuilder) && (reacts || reactsBuilder) && reactsHandler` 
 
-`reacts` and `reactsBuilder` work the same way as `post` and `postBuilder` you only need one of both
-**Unless** if you declare a `reacts` or `reactsBuilder` statement you will need to define an `reactsHandler`
+`reacts` and `reactsBuilder` work the same way as `post` and `postBuilder` you only need one of both.
+**Unless**, if you declare a `reacts` or `reactsBuilder` statement you will need to define a `reactsHandler` method
 
 ```js
 f.creatPost({
@@ -143,14 +143,14 @@ f.creatPost({
     }
 })
 ```
-same as the upper one but you have access to the `ops` parameter which is provided when `f.display(post, ops)`
-This function can also be an `async` retruning a _Promise_ that resolve an _Array_ of *unicode emoji*
+Same as the upper one but you have access to the `ops` parameter which has provided when doing `f.display(post, ops)`.
+This function can also be `async` returning a _Promise_ that resolves an _Array_ of *unicode emoji*.
 
 #### `globalBuilder && reactsHandler` 
 
-the `globalBuilder` permits to build the `post` and the `reacts` in the same _methods_,
-It returns and _Object_ containing an `{embed, content}` _Object_ as `post` and an _Array_ of *unicode emoji* as `reacts`
-you alse need an `reactsHandler` because you are also building emojis;
+The `globalBuilder` permits to build the `post` and the `reacts` in the same _statement_,
+It returns and _Object_ containing an `{embed, content}` _Object_ as `post` and an _Array_ of *unicode emoji* as `reacts`.
+You also need a `reactsHandler` because you are also building emojis.
 
 ```js
 f.createPost({
@@ -168,12 +168,12 @@ f.createPost({
     }
 })
 ```
-Off course it can be asyncronous, same as before
+Of course it can be asyncronous, same as before.
 
 ### f.display(post: Post, ops?: any)
 
-the `post` parameter is a _Post_ provided by the `f.createPost()` method
-the `ops` parameter is an _Object_ witch contains all the data you want to pass to the `postBuilder | reactsBuilder | globalBuilder`
+The `post` parameter is a _Post_ provided by the `f.createPost()` method
+The `ops` parameter is an _Object_ which contains all the data you want to pass to the `postBuilder | reactsBuilder | globalBuilder`
 
 ```js
 let post = f.creatPost({
@@ -196,15 +196,12 @@ f.display(post, {Quit: '❎ ', Prev: '⏪', Next: '⏩', Ok: '✅'});
 
 ### f.onReplies(handler: (msg) => void, filter?: (msg) => boolean)
 
-the `post` parameter is a _Post_ provided by the `f.createPost()` method
-the `ops` parameter is an _Object_ witch contains all the data you want to pass to the `postBuilder | reactsBuilder | globalBuilder`
-
 ```js
 f.onReplies(msg => {
     console.log('reply!', msg.content)
 })
 ```
-get all _Messages_ sent on the _Channel_ provided at `let f = form(bot, msg.channel)`
+Get all _Messages_ sent on the _Channel_ provided at `let f = form(bot, msg.channel)`
 
 ```js
 f.onReplies(msg => {
@@ -212,7 +209,7 @@ f.onReplies(msg => {
 }, msg => msg.mentions.members.get(bot.user.id) ? true : false)
 ```
 
-get only the _Messages_ witch @mention the bot, sent on the _Channel_ provided at `let f = form(bot, msg.channel)`
+Get only the _Messages_ which @mention the bot, sent on the _Channel_ provided at `let f = form(bot, msg.channel)`
 
 ### Examples 
 
@@ -228,4 +225,4 @@ See [Example2](examples/example3.js)
 
 ## License
 
-This project is licensed under the MIT License
+This project is licensed under the ISC License
