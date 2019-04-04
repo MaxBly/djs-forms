@@ -49,7 +49,7 @@ bot.on('message', msg => {
 
 `rules` need to be defined following one of thoses formats
 
-- `post || postBuilder` 
+#### `post || postBuilder` 
 
 ```js
 f.creatPost({
@@ -107,11 +107,11 @@ f.creatPost({
 ```
 same as the previous one
 
-- (`post || postBuilder`) && (`reacts || reactsBuilder) && reactsHandler` 
+#### `(post || postBuilder) && (reacts || reactsBuilder) && reactsHandler` 
 
 
 
-- `globalBuilder && reactsHandler` 
+#### `globalBuilder && reactsHandler` 
 
 ```ts
 f.creatPost({
