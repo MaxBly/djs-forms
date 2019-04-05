@@ -5,8 +5,6 @@ export type ReactsBuilder = (ops: any) => any[] | Promise<any[]>;
 export type PostBuilder = (ops: any) => MessageOptions | Promise<MessageOptions>;
 export type GlobalBuilder = (ops: any) => GlobalData | Promise<GlobalData>;
 
-
-let k = new djs.Client()
 export interface PostCreatorOptions {
     postBuilder?: PostBuilder,
     globalBuilder?: GlobalBuilder,

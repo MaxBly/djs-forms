@@ -1,5 +1,5 @@
-import Form from './lib/Form'
-import Post from './lib/Post'
+import * as Form from './lib/Form'
+import * as Post from './lib/Post'
 
 export default Form;
 export { Post };
