@@ -1,104 +1,72 @@
 import djs from 'discord.js';
 import Post, { PostCreatorOptions } from './Post';
-export default function (bot: djs.Client, channel: any): Form;
 export declare type RepliesHandler = (msg: djs.Message) => void;
 export declare type RepliesFilter = (msg: djs.Message) => boolean;
-export declare class Form {
+export interface StateProvider {
+    state: State;
+    setStateData: (value: any) => void;
+}
+export interface State {
+    currentPost: Post | undefined;
+    lastPost: Post | undefined;
+    posts: Post[];
+    data: any;
+}
+export default class Form {
     private client;
     channel: any;
     masterPost: string;
     repliesHandler: RepliesHandler;
     repliesFilter: RepliesFilter;
-    state: any;
+    state: State;
     /**
+     * @constructor
+     * @public
      * Create a new form
      *
+     * @static
+     * @param {djs.Client} client
+     * @param {djs.Channel} channel
+    */
+    constructor(client: djs.Client, channel: any);
+    /**
+     * @public
+     * Create a new form
+     *
+     * @static
      * @param {djs.Client} client
      * @param {any} channel
      */
-    constructor(client: djs.Client, channel: any);
+    static create(bot: djs.Client, channel: any): Form;
     /**
-     * Create new post.
-     * Example with static data provided
-     * createPost({
-     *     post: {
-     *         embed: new djs.RichEmbed().setAuthor('🥃').setTitle('Bonsoir')
-     *     },
-     *     reacts: ['💼', '🍇'],
-     *     reactsHandler(react: djs.MessageReaction) {
-     *         switch (react.emoji.name) {
-     *             case '💼': testform.display(post2); break;
-     *             case '🍇': testform.display(post3); break;
-     *         }
-     *     }
-     * })
-     *
-     * Example with dynamic data provided
-     * createPost({
-     *     postBuilder(ops) {
-     *      //ops is prevent when doing from.display(post, ops)
-     *      let embed: new djs.RichEmbed()
-     *          .setAuthor('🥃')
-     *          .setTitle('Bonsoir')
-     *      let content = ops.title;
-     *      return {embed, content}
-     *     },
-     *     reactsBuilder(ops) {
-     *      //ops is prevent when doing from.display(post, ops)
-     *      let emoji = [ops.emojis[0], ops.emojis[3], ops.emojis[1]]
-     *      return emojis;
-     *     },
-     *     reactsHandler(react: djs.MessageReaction) {
-     *         switch (react.emoji.name) {
-     *             case '💼': testform.display(post2, {title: 'Bonsoir'}); break;
-     *             case '🍇': testform.display(post3, {emojis: ['🥃','🛏','💼', '🍇']}); break;
-     *         }
-     *     }
-     * })
-     *
-     * Example with async data provided
-     * createPost({
-     *     async postBuilder(ops) {
-     *      //ops is prevent when doing from.display(post, ops)
-     *      let embed: new djs.RichEmbed()
-     *          .setAuthor('🥃')
-     *          .setTitle('Bonsoir')
-     *      let content = await fetchFromApi('http://someurl.com/somedata');
-     *      return {embed, content}
-     *     },
-     *     async reactsBuilder(ops) {
-     *      //ops is prevent when doing from.display(post, ops)
-     *      let emoji = await fetchFromApi('http://someurl.com/someemojis')
-     *      return emojis;
-     *     },
-     *     reactsHandler(react: djs.MessageReaction) {
-     *         switch (react.emoji.name) {
-     *             case '💼': testform.display(post2); break;
-     *             case '🍇': testform.display(post3); break;
-     *         }
-     *     }
-     * })
+     * @public
+     * Create a new Post
      *
      * @param {PostCreatorOptions} rules
      * @returns {Post}
-     * @public
      */
-    createPost(rules: PostCreatorOptions): Post;
+    createPost(rules?: PostCreatorOptions): Post;
     /**
+     * @public
      * Display the post.
      *
      * @param {Post} post
      * @param {any} ops
      * @returns {Promise<void>}
-     * @public
      */
-    setState(value: any): Promise<void>;
-    display(post: Post, ops?: any): Promise<void>;
+    display(post: Post, ops?: any): Promise<Post>;
     /**
+     * @public
+     * Set the form State.
+     *
+     * @param {any} value
+     */
+    setStateData(value: any): void;
+    /**
+     * @public
      * Fetch the current message.
      *
      * @returns {Promise<djs.Message>}
-     * @public
      */
     fetchForm(): Promise<djs.Message>;
     /**

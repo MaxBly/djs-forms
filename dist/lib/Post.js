@@ -1,29 +1,84 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = __importDefault(require("discord.js"));
-let k = new discord_js_1.default.Client();
 class Post {
     /**
+     * @private
+     * @constructor
      * Create new Post.
      *
      * @param {PostCreatorOptions} rules
      * @param {string} clientid
-     * @returns {Promise<void>}
-     * @private
      */
-    constructor(rules, clientid, parentForm) {
+    constructor(rules = {}, clientid, parentForm) {
         this.rules = rules;
         this.clientid = clientid;
         this.parentForm = parentForm;
         this.post = {};
         this.reacts = [];
     }
+    /**
+     * @public
+     * Set the post
+     *
+     * @param {PostData | PostBuilder} post
+     * @returns Post
+     */
+    setPost(post) {
+        if (typeof post === 'function') {
+            this.rules.postBuilder = post;
+        }
+        else {
+            this.post = post;
+        }
+        return this;
+    }
+    /**
+     * @public
+     * Set the reacts and the reacts handler
+     *
+     * @param {ReactsData | ReactsBuilder} reacts
+     * @param {ReactsHandler} handler
+     * @returns Post
+     */
+    setReacts(reacts, handler) {
+        if (typeof reacts === 'function') {
+            this.rules.reactsBuilder = reacts;
+        }
+        else {
+            this.reacts = reacts;
+        }
+        this.rules.reactsHandler = handler;
+        return this;
+    }
+    /**
+     * @public
+     * Set the builder of the post and the reacts handler
+     *
+     * @param {GlobalBuilder} builder
+     * @param {ReactsHandler} handler
+     * @returns Post
+     */
+    setBuilder(builder, handler) {
+        if (typeof builder === 'function') {
+            this.rules.globalBuilder = builder;
+        }
+        else {
+            this.reacts = builder.reacts;
+            this.post = builder.post;
+        }
+        this.rules.reactsHandler = handler;
+        return this;
+    }
+    /**
+     * @public
+     * Build a Post.
+     *
+     * @param {any} ops
+     * @returns {Promise<Post>}
+     */
     async build(ops = {}) {
         ops.state = this.parentForm.state;
-        ops.setState = this.parentForm.setState.bind(this.parentForm);
+        ops.setDataState = this.parentForm.setStateData.bind(this.parentForm);
         if (this.rules.globalBuilder) {
             if (this.rules.reactsHandler) {
                 let global = await this.rules.globalBuilder(ops);
@@ -61,17 +116,18 @@ class Post {
                 }
             }
         }
-        return;
+        return this;
     }
     /**
-    * Display the Post new Post.
-    *
+     * @public
+     * Display the Post new Post.
+     *
     * @param {djs.Message} msg
     * @param {any} ops
-    * @returns {Promise<void>}
-    * @private
+    * @returns {Promise<Post>}
     */
-    async display(msg, ops = {}) {
+    async display(ops = {}) {
+        let msg = await this.parentForm.fetchForm();
         this.collector && this.collector.stop();
         await msg.clearReactions();
         await this.build(ops);
@@ -80,10 +136,10 @@ class Post {
                 await msg.react(react);
             }
             this.collector = msg.createReactionCollector((react, user) => user.id !== this.clientid && this.reacts.includes(react.emoji.name));
-            this.collector.on('collect', (r) => this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setState: this.parentForm.setState }));
+            this.collector.on('collect', (r) => this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData }));
         }
         await msg.edit(this.post.content, this.post.embed);
-        return;
+        return Post;
     }
 }
 exports.default = Post;
