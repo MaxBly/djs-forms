@@ -39,15 +39,55 @@ bot.on('message', msg => {
             });
             //then just display it, this will build the post and render it
             f.display(helloPost);
+            //or
+            helloPost.dispay()
         }
     })
 
 ```
 ## Docs
 
-### f.createPost(rules: PostCreatorOptions)
+### Post Creation
+
+to create a post you can either use the `Builders Methods` :
+    - Post.setPost(post: PostData | PostBuilder) : Post
+    - Post.setReacts(reacts: ReactsData | ReactsBuilder, handler: ReactsHandler) : Post
+    - Post.setGlobal(builder: GlobalData | GlobalBuilder, handler: ReactsHandler) : Post
+or you can define `rules` of the post :
+
+### f.createPost(rules?: PostCreatorOptions): Post
+
 
 `rules` need to be defined following one of those formats
+
+```ts
+interface PostCreatorOptions {
+    postBuilder?: PostBuilder,
+    globalBuilder?: GlobalBuilder,
+    reactsBuilder?: ReactsBuilder,
+    reactsHandler?: ReactsHandler,
+    post?: PostData,
+    reacts?: ReactsData
+}
+
+type PostBuilder = (ops: any) => PostData | Promise<PostData>;
+type GlobalBuilder = (ops: any) => GlobalData | Promise<GlobalData>;
+type ReactsBuilder = (ops: any) => ReactsData | Promise<ReactsData>;
+type ReactsHandler = (react: djs.MessageReaction, state: StateProvider) => void;
+
+type ReactsData = React[];
+type React = string;
+
+interface PostData {
+    embed?: djs.RichEmbed,
+    content?: string
+}
+
+interface GlobalData {
+    reacts: ReactsData,
+    post: PostData
+}
+```
 
 #### `post || postBuilder` 
 
@@ -169,6 +209,61 @@ f.createPost({
 })
 ```
 Of course it can be asyncronous, same as before.
+
+
+
+### post.setPost(post: PostData | PostBuilder): Post
+
+`post` can be either a `PostData Object` or an sync/async function that return a `PostData Object`
+```ts
+interface PostData {
+    embed: djs.RichEmbed,
+    content: string
+}
+
+type PostBuilder = (ops: any) => PostData | Promise<PostData>  
+```
+
+Same as defining `rules.post`, or `rules.postBuilder`
+
+### post.setReacts(ReactsData | ReactsBuilder, ReactsHandler): Post
+
+```ts
+type ReactsData = string[];
+
+type ReactsBuilder = (ops: any) => ReactsData | Promise<ReactsData>  
+```
+
+```ts
+type ReactsHandler = (react: djs.EmojiReaction) => void  
+```
+Same as defining `rules.reacts`, or `rules.reactsBuilder` and `rules.reactsHandler`
+
+### post.setBuilder(GlobalData | GlobalBuilder, ReactsHandler): Post
+
+```ts
+interface GlobalData {
+    post: PostData,
+    reacts: ReactsData
+};
+
+type GlobalBuilder = (ops: any) => GlobalData | Promise<GlobalData>  
+```
+
+```ts
+type ReactsHandler = (react: djs.EmojiReaction) => void  
+```
+Same as defining `rules.post` and `rules.reacts`, or `rules.globalBuilder` and `rules.reactsHandler`
+
+### post.build(ops: any)
+
+Execute the builders, provided before, with ops `ops`
+Prepare for displaying
+
+### post.display(ops: any)
+
+Execute the buid 
+
 
 ### f.display(post: Post, ops?: any)
 
