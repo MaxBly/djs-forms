@@ -58,7 +58,7 @@ export default class Post {
         if (typeof post === 'function') {
             this.rules.postBuilder = post;
         } else {
-            this.post = post
+            this.rules.post = post
         }
         return this;
     }
@@ -76,7 +76,7 @@ export default class Post {
         if (typeof reacts === 'function') {
             this.rules.reactsBuilder = reacts;
         } else {
-            this.reacts = reacts
+            this.rules.reacts = reacts
         }
         this.rules.reactsHandler = handler;
         return this;
@@ -95,8 +95,8 @@ export default class Post {
         if (typeof builder === 'function') {
             this.rules.globalBuilder = builder;
         } else {
-            this.reacts = builder.reacts
-            this.post = builder.post
+            this.rules.reacts = builder.reacts
+            this.rules.post = builder.post
         }
         this.rules.reactsHandler = handler;
         return this;
@@ -112,7 +112,7 @@ export default class Post {
 
     async build(ops: any = {}) {
         ops.state = this.parentForm.state;
-        ops.setDataState = this.parentForm.setStateData.bind(this.parentForm);
+        ops.setStateData = this.parentForm.setStateData.bind(this.parentForm);
         if (this.rules.globalBuilder) {
             if (this.rules.reactsHandler) {
                 let global = await this.rules.globalBuilder(ops);
