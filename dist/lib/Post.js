@@ -130,6 +130,7 @@ class Post {
         this.collector && this.collector.stop();
         await msg.clearReactions();
         await this.build(ops);
+        await msg.edit(this.post.content, this.post.embed);
         if (this.reacts) {
             for (let react of this.reacts) {
                 await msg.react(react);
@@ -137,7 +138,6 @@ class Post {
             this.collector = msg.createReactionCollector((react, user) => user.id !== this.clientid && this.reacts.includes(react.emoji.name));
             this.collector.on('collect', (r) => this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData }));
         }
-        await msg.edit(this.post.content, this.post.embed);
         return Post;
     }
 }
