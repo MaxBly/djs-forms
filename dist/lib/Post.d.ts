@@ -24,7 +24,6 @@ export interface GlobalData {
 }
 export default class Post {
     private rules;
-    private clientid;
     parentForm: Form;
     private post;
     private reacts;
@@ -37,7 +36,7 @@ export default class Post {
      * @param {PostCreatorOptions} rules
      * @param {string} clientid
      */
-    constructor(rules: PostCreatorOptions, clientid: string, parentForm: Form);
+    constructor(rules: PostCreatorOptions, parentForm: Form);
     /**
      * @public
      * Set the post

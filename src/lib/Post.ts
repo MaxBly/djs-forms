@@ -44,7 +44,7 @@ export default class Post {
      * @param {string} clientid
      */
 
-    constructor(private rules: PostCreatorOptions = {}, private clientid: string, public parentForm: Form) { }
+    constructor(private rules: PostCreatorOptions = {}, public parentForm: Form) { }
 
     /**
      * @public
@@ -168,7 +168,7 @@ export default class Post {
                 await msg.react(react);
             }
             this.collector = msg.createReactionCollector(
-                (react: djs.MessageReaction, user: djs.GuildMember) => user.id !== this.clientid && this.reacts.includes(react.emoji.name)
+                (react: djs.MessageReaction, user: djs.GuildMember) => user.id !== msg.client.user.id && this.reacts.includes(react.emoji.name)
             );
             this.collector.on('collect', (r: djs.MessageReaction) =>
                 this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData })

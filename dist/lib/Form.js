@@ -76,7 +76,7 @@ class Form {
      * @returns {Post}
      */
     createPost(id, rules = {}) {
-        let post = new Post_1.default(rules, this.client.user.id, this);
+        let post = new Post_1.default(rules, this);
         if (!!id) {
             this.posts.set(id, post);
         }

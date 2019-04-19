@@ -9,9 +9,8 @@ class Post {
      * @param {PostCreatorOptions} rules
      * @param {string} clientid
      */
-    constructor(rules = {}, clientid, parentForm) {
+    constructor(rules = {}, parentForm) {
         this.rules = rules;
-        this.clientid = clientid;
         this.parentForm = parentForm;
         this.post = {};
         this.reacts = [];
@@ -135,7 +134,7 @@ class Post {
             for (let react of this.reacts) {
                 await msg.react(react);
             }
-            this.collector = msg.createReactionCollector((react, user) => user.id !== this.clientid && this.reacts.includes(react.emoji.name));
+            this.collector = msg.createReactionCollector((react, user) => user.id !== msg.client.user.id && this.reacts.includes(react.emoji.name));
             this.collector.on('collect', (r) => this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData }));
         }
         return Post;
