@@ -103,14 +103,14 @@ export default class Post {
     }
 
     /**
-     * @public
+     * @private
      * Build a Post.
      *
      * @param {any} ops
      * @returns {Promise<Post>}
      */
 
-    async build(ops: any = {}) {
+    private async build(ops: any = {}) {
         ops.state = this.parentForm.state;
         ops.setStateData = this.parentForm.setStateData.bind(this.parentForm);
         if (this.rules.globalBuilder) {
@@ -145,7 +145,6 @@ export default class Post {
                 }
             }
         }
-        return this;
     }
 
     /**

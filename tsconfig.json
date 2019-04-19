@@ -56,7 +56,8 @@
   },
   "include": [
     "./src/lib/*",
-    "./src/index.ts"
+    "./src/index.ts",
+    "./src/test.ts"
   ],
   "exclude": [
     "./dist/*"

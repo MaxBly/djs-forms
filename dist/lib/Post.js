@@ -70,7 +70,7 @@ class Post {
         return this;
     }
     /**
-     * @public
+     * @private
      * Build a Post.
      *
      * @param {any} ops
@@ -116,7 +116,6 @@ class Post {
                 }
             }
         }
-        return this;
     }
     /**
      * @public

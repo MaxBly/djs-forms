@@ -65,13 +65,13 @@ export default class Post {
      */
     setBuilder(builder: GlobalData | GlobalBuilder, handler: ReactsHandler): Post;
     /**
-     * @public
+     * @private
      * Build a Post.
      *
      * @param {any} ops
      * @returns {Promise<Post>}
      */
-    build(ops?: any): Promise<this>;
+    private build;
     /**
      * @public
      * Display the Post new Post.
