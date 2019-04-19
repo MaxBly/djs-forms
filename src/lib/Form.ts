@@ -37,7 +37,7 @@ export default class Form {
         lastPost: undefined,
         data: {},
     };
-    public readonly posts: Collection<string, Post>;
+    public readonly posts: Collection<string, Post> = new Collection<string, Post>();
     public channel: ChannelData = {};
     /**
      * @constructor

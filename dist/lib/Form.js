@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
 const Post_1 = __importDefault(require("./Post"));
 class Form {
     /**
@@ -23,6 +24,7 @@ class Form {
             lastPost: undefined,
             data: {},
         };
+        this.posts = new discord_js_1.Collection();
         this.channel = {};
         if (!!chan)
             this.setChannel(chan, perms);
