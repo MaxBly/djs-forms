@@ -9,7 +9,8 @@ class Post {
      * @param {PostCreatorOptions} rules
      * @param {string} clientid
      */
-    constructor(rules = {}, parentForm) {
+    constructor(id, rules = {}, parentForm) {
+        this.id = id;
         this.rules = rules;
         this.parentForm = parentForm;
         this.post = {};
@@ -126,7 +127,8 @@ class Post {
     */
     async display(ops = {}) {
         let msg = await this.parentForm.fetchForm();
-        this.collector && this.collector.cleanup();
+        console.log('display', this.id);
+        this.collector && this.collector.stop('reload');
         await msg.clearReactions();
         await this.build(ops);
         await msg.edit(this.post.content, this.post.embed);
