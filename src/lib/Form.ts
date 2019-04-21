@@ -100,7 +100,7 @@ export default class Form {
      */
 
     public createPost(id?: string, rules: PostCreatorOptions = {}) {
-        let post = new Post(rules, this);
+        let post = new Post(id, rules, this);
         if (!!id) {
             this.posts.set(id, post)
         }

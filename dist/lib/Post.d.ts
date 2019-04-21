@@ -79,5 +79,5 @@ export default class Post {
     * @param {any} ops
     * @returns {Promise<Post>}
     */
-    display(ops?: any): Promise<typeof Post>;
+    display(ops?: any): Promise<Post>;
 }

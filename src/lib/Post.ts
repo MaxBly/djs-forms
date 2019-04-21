@@ -44,7 +44,7 @@ export default class Post {
      * @param {string} clientid
      */
 
-    constructor(private rules: PostCreatorOptions = {}, public parentForm: Form) { }
+    constructor(public id, private rules: PostCreatorOptions = {}, public parentForm: Form) { }
 
     /**
      * @public
@@ -157,9 +157,10 @@ export default class Post {
     */
 
 
-    async display(ops: any = {}) {
+    async display(ops: any = {}): Promise<Post> {
         let msg = await this.parentForm.fetchForm();
-        this.collector && this.collector.stop();
+        console.log('display', this.id)
+        this.collector && this.collector.stop('reload')
         await msg.clearReactions()
         await this.build(ops);
         await msg.edit(this.post.content, this.post.embed)
@@ -174,6 +175,6 @@ export default class Post {
                 this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData })
             );
         }
-        return Post;
+        return this;
     }
 }

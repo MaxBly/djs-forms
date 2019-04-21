@@ -126,7 +126,7 @@ class Post {
     */
     async display(ops = {}) {
         let msg = await this.parentForm.fetchForm();
-        this.collector && this.collector.stop();
+        this.collector && this.collector.cleanup();
         await msg.clearReactions();
         await this.build(ops);
         await msg.edit(this.post.content, this.post.embed);
@@ -137,7 +137,7 @@ class Post {
             this.collector = msg.createReactionCollector((react, user) => user.id !== msg.client.user.id && this.reacts.includes(react.emoji.name));
             this.collector.on('collect', (r) => this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData }));
         }
-        return Post;
+        return this;
     }
 }
 exports.default = Post;
