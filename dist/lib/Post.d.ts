@@ -29,13 +29,15 @@ export default class Post {
     private post;
     private reacts;
     private collector;
+    private stateProvider;
     /**
      * @private
      * @constructor
      * Create new Post.
      *
+     * @param {string} id
      * @param {PostCreatorOptions} rules
-     * @param {string} clientid
+     * @param {Form} parentForm
      */
     constructor(id: any, rules: PostCreatorOptions, parentForm: Form);
     /**
@@ -69,14 +71,13 @@ export default class Post {
      * Build a Post.
      *
      * @param {any} ops
-     * @returns {Promise<Post>}
+     * @returns {Promise<void>}
      */
     private build;
     /**
      * @public
      * Display the Post new Post.
      *
-    * @param {djs.Message} msg
     * @param {any} ops
     * @returns {Promise<Post>}
     */

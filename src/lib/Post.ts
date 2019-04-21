@@ -23,28 +23,33 @@ export interface PostData {
     content?: string
 }
 
-
 export interface GlobalData {
     reacts: ReactsData,
     post: PostData
 }
 
-
 export default class Post {
     private post: PostData = {};
     private reacts: ReactsData = [];
     private collector: djs.ReactionCollector;
-
+    private stateProvider: StateProvider;
     /**
      * @private
      * @constructor
      * Create new Post.
      *
+     * @param {string} id
      * @param {PostCreatorOptions} rules
-     * @param {string} clientid
+     * @param {Form} parentForm
      */
 
-    constructor(public id, private rules: PostCreatorOptions = {}, public parentForm: Form) { }
+    constructor(public id, private rules: PostCreatorOptions = {}, public parentForm: Form) {
+        this.stateProvider = {
+            state: this.parentForm.state,
+            setStateData: this.parentForm.setStateData.bind(this.parentForm),
+        }
+
+    }
 
     /**
      * @public
@@ -107,10 +112,10 @@ export default class Post {
      * Build a Post.
      *
      * @param {any} ops
-     * @returns {Promise<Post>}
+     * @returns {Promise<void>}
      */
 
-    private async build(ops: any = {}) {
+    private async build(ops: any = {}): Promise<void> {
         ops.state = this.parentForm.state;
         ops.setStateData = this.parentForm.setStateData.bind(this.parentForm);
         if (this.rules.globalBuilder) {
@@ -145,13 +150,13 @@ export default class Post {
                 }
             }
         }
+        return;
     }
 
     /**
      * @public
      * Display the Post new Post.
      * 
-    * @param {djs.Message} msg
     * @param {any} ops
     * @returns {Promise<Post>}
     */
@@ -168,11 +173,11 @@ export default class Post {
             for (let react of this.reacts) {
                 await msg.react(react);
             }
-            this.collector = msg.createReactionCollector(
-                (react: djs.MessageReaction, user: djs.GuildMember) => user.id !== msg.client.user.id && this.reacts.includes(react.emoji.name)
+            this.collector = msg.createReactionCollector((react: djs.MessageReaction, user: djs.GuildMember) =>
+                user.id !== msg.client.user.id && this.reacts.includes(react.emoji.name)
             );
             this.collector.on('collect', (r: djs.MessageReaction) =>
-                this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData })
+                this.rules.reactsHandler && this.rules.reactsHandler(r, this.stateProvider)
             );
         }
         return this;

@@ -6,8 +6,9 @@ class Post {
      * @constructor
      * Create new Post.
      *
+     * @param {string} id
      * @param {PostCreatorOptions} rules
-     * @param {string} clientid
+     * @param {Form} parentForm
      */
     constructor(id, rules = {}, parentForm) {
         this.id = id;
@@ -15,6 +16,10 @@ class Post {
         this.parentForm = parentForm;
         this.post = {};
         this.reacts = [];
+        this.stateProvider = {
+            state: this.parentForm.state,
+            setStateData: this.parentForm.setStateData.bind(this.parentForm),
+        };
     }
     /**
      * @public
@@ -74,7 +79,7 @@ class Post {
      * Build a Post.
      *
      * @param {any} ops
-     * @returns {Promise<Post>}
+     * @returns {Promise<void>}
      */
     async build(ops = {}) {
         ops.state = this.parentForm.state;
@@ -116,12 +121,12 @@ class Post {
                 }
             }
         }
+        return;
     }
     /**
      * @public
      * Display the Post new Post.
      *
-    * @param {djs.Message} msg
     * @param {any} ops
     * @returns {Promise<Post>}
     */
@@ -137,7 +142,7 @@ class Post {
                 await msg.react(react);
             }
             this.collector = msg.createReactionCollector((react, user) => user.id !== msg.client.user.id && this.reacts.includes(react.emoji.name));
-            this.collector.on('collect', (r) => this.rules.reactsHandler && this.rules.reactsHandler(r, { state: this.parentForm.state, setStateData: this.parentForm.setStateData }));
+            this.collector.on('collect', (r) => this.rules.reactsHandler && this.rules.reactsHandler(r, this.stateProvider));
         }
         return this;
     }
